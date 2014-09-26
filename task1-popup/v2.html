@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Yandex Task 1 (popup)</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		body {
+			margin: 0;
+			color:#333;
+			background-color: #F6F5F3;
+			font: 15px Arial,Helvetica,sans-serif;
+			line-height: 1.4em;
+		}
+		h1 {
+			text-align: center;
+		}
+
+		#popup {
+			width: 450px;
+	        height: 300px;
+	        padding: 20px;
+	        position: absolute;
+	        top: 50%; left: 50%;
+	        margin-left: -235px; /* (width + padding)/2 */
+	        margin-top: -170px; /* (height + padding)/2 */
+		}
+
+		.styled {			
+			background-color: #fff;
+			-webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 3px 4px -3px rgba(0,0,0,.3);
+			-moz-box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 3px 4px -3px rgba(0,0,0,.3);
+			box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 3px 4px -3px rgba(0,0,0,.3);
+		}
+	</style>	
+</head>
+<body>
+	<h1>Отрицательный margin</h1>
+
+	<div id="popup" class="styled">
+		<h3>Плюсы</h3>
+		<ul>
+			<li>Кроссбраузерность</li>
+			<li>Минимальный код</li>
+		</ul>
+
+		<h3>Минусы</h3>
+		<ul>
+			<li>Не адаптивный</li>
+			<li>Ползет верстка, если в контейнере слишком много контента</li>
+			<li>Приходится компенсировать отступы или использовать box-sizing: border-box</li>
+		</ul>
+	</div>
+
+</body>
+</html>

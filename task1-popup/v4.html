@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Yandex Task 1 (popup)</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		body {
+			margin: 0;
+			color:#333;
+			background-color: #F6F5F3;
+			font: 15px Arial,Helvetica,sans-serif;
+			line-height: 1.4em;
+		}
+		h1 {
+			text-align: center;
+		}
+
+		.block {
+		  text-align: center;
+		  height: 100%;
+			width: 100%;
+			top:0;
+			left:0;
+			position: absolute;
+		}
+		 
+		.block:before { /* Элемент для вертикального выравнивания */
+		  content: '';
+		  display: inline-block;
+		  height: 100%; 
+		  vertical-align: middle;
+		  margin-right: -0.25em;
+		 }
+		 
+		.centered {
+		  display: inline-block;
+		  vertical-align: middle;
+		  /*width: 30%;*/
+		 }
+
+		.styled {		
+			padding:20px;	
+			background-color: #fff;
+			-webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 3px 4px -3px rgba(0,0,0,.3);
+			-moz-box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 3px 4px -3px rgba(0,0,0,.3);
+			box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 3px 4px -3px rgba(0,0,0,.3);
+			text-align: left;
+		}
+	</style>	
+</head>
+<body>
+	<h1>Inline-block и один псевдоэлемент</h1>
+
+	<div class="block">    
+	    <div class="centered styled">
+	        <h3>Плюсы</h3>
+			<ul>
+				<li>Изменяемая высота</li>
+			</ul>
+
+			<h3>Минусы</h3>
+			<ul>
+				<li>Не работает в IE 8</li>
+			</ul>
+	    </div>	    
+	</div>
+
+</body>
+</html>

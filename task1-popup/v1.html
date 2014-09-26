@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Yandex Task 1 (popup)</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		body {
+			margin: 0;
+			color:#333;
+			background-color: #F6F5F3;
+			font: 15px Arial,Helvetica,sans-serif;
+			line-height: 1.4em;
+		}
+		h1 {
+			text-align: center;
+		}
+
+		#popup {
+			position: fixed;
+			margin: auto;
+			bottom: 0;
+			left: 0;
+			top: 0;
+			right: 0;
+			width: 50%;
+			height: 50%;
+			overflow: auto;
+			padding:20px;
+			display: none;
+		}
+
+		.fade {
+			position: fixed;
+			background-color: rgba(0,0,0,.2);
+			top:0;
+			left:0;
+			width: 100%;
+			height: 100%;
+			display: none;
+		}
+		.center {			
+			text-align: center;
+		}
+		.open {
+			border:1px solid #ccc;
+			padding:5px 15px;
+			display: inline-block;
+			cursor: pointer;
+			border-radius: 15px;
+		}
+		.styled {			
+			background-color: #fff;
+			-webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 3px 4px -3px rgba(0,0,0,.3);
+			-moz-box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 3px 4px -3px rgba(0,0,0,.3);
+			box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 3px 4px -3px rgba(0,0,0,.3);
+		}
+	</style>	
+</head>
+<body>
+	<div class="fade"></div>
+	<h1>Абсолютное позиционирование</h1>
+	<div class="center">
+		<div class="open">open popup</div>
+	</div>
+
+	<div id="popup" class="styled">
+		<h3>Плюсы</h3>
+		<ul>
+			<li>Кроссбраузерность (включая IE 8-10)</li>
+			<li>Никакой дополнительной разметки, минимум стилей</li>
+			<li>Адаптивность</li>
+			<li>Независимость от padding (без box-sizing!)</li>
+			<li>Работает для изображений</li>
+		</ul>
+
+		<h3>Минусы</h3>
+		<ul>
+			<li>Должна быть задана высота</li>
+			<li>Рекомендуется задать overflow: auto, при большом количестве контента</li>
+		</ul>
+	</div>
+
+</body>
+</html>
