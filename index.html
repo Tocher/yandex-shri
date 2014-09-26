@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Yandex Task 3</title>
+	<style type="text/css">
+		body {
+			margin: 0;
+			overflow: hidden;
+		}
+	</style>
+</head>
+<body>
+
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script type="text/javascript">		
+		var min_radius = 15;
+		var max_radius = 20;
+		var width = window.innerWidth,
+			height = window.innerHeight;			
+		var circleCount = 50; 					// wow
+		var min_speed = 2; 						// so slow
+		var max_speed = 4; 						// such speed
+		var colors = ["#ff0000","#ffff00"]; 	// pretty colors
+		var mouse_radius_max = 200;				// Mouse Force range
+		var mouse = false;
+
+		var FPS = 1000 / 60;
+
+		// Generating circles
+		var points = new Array();
+		
+		for (var i = 0; i < circleCount; i++) {
+			var rand_x = Math.round(width * Math.random());
+			var rand_y = Math.round(height * Math.random());
+			var rand_radius = getRandomInRange(min_radius, max_radius);
+
+			if(isCordsAvailable(rand_x, rand_y, rand_radius)) {
+				points[i] = new Point(
+					rand_x, 
+					rand_y, 
+					rand_radius, 
+					getRandomInRange(0,360), 
+					getRandomInRange(min_speed, max_speed),
+					colors[getRandomInRange(0,1)]
+				);
+			}
+			else
+				i--;
+		};
+
+
+
+		var svg = d3.select("body")
+					.append("svg")
+					.attr("width", width)
+    				.attr("height", height);  
+
+		svg.selectAll("circle")
+			.data(points)
+			.enter()
+			.append("circle")
+			.style("fill", "red")
+			.attr("cx",function(d) {
+				return d.x
+			})
+			.attr("cy",function(d) {
+				return d.y
+			})
+			.attr("r",function(d) {
+				return d.radius
+			});
+
+		// Waves!
+		svg.append("circle")
+			.attr("mouse_radius",0)
+    		.attr("mouse",true);
+    	svg.append("circle")
+    		.attr("mouse_radius",10)
+    		.attr("mouse",true);
+    	svg.append("circle")
+    		.attr("mouse_radius",20)
+    		.attr("mouse",true);	    		
+
+		svg.on("mousemove", function() {
+	    	mouse = d3.mouse(this);	    	
+	    })
+	    	.on("mouseleave", function() {
+	    	mouse = false;
+	    })
+		
+
+	    setInterval(draw, FPS);
+
+		
+		function draw() {
+			svg.selectAll("circle")
+				.each(function(d) {
+					var d3_el = d3.select(this);
+
+					// Mouse Waves
+					if(d3_el.attr("mouse")){
+						if(mouse) {
+							d3_el
+								.attr("cx",mouse[0])
+					    		.attr("cy",mouse[1])
+					    		.attr("r",function(d) {
+					    			var m_r = parseInt(d3.select(this).attr("mouse_radius"));
+					    			m_r += 3;
+					    			if(m_r > mouse_radius_max)
+					    				m_r = 1;
+					    			d3.select(this).attr("mouse_radius", m_r);
+					    			return m_r;
+					    		})
+					    		.style("fill", "rgba(0,0,0,0)")
+					    		.style("stroke", "rgba(0,0,255,1)");
+				    	}
+				    	else {
+				    		d3_el
+				    			.style("fill", "rgba(0,0,0,0)")
+					    		.style("stroke", "rgba(0,0,0,0)");
+				    	}
+				    	return;
+					}
+
+					d.getNewCords();			
+					d3_el
+						.attr("cx",d.x)
+						.attr("cy",d.y);
+					
+
+					if(d3_el.style("fill") == "rgb(255, 0, 0)")							
+						changeColorInCircle(this,"yellow");						
+					else if(d3_el.style("fill") == "rgb(255, 255, 0)")
+						changeColorInCircle(this,"red");
+					
+				});	
+			return false;
+		}
+
+		function changeColorInCircle(e,color) {
+			d3.select(e)
+				.transition()
+				.duration(getRandomInRange(200,2000))
+				.style("fill",color);
+			return false;
+		}
+
+		function isCordsAvailable(x, y, radius) {
+			for (var i = 0; i < points.length; i++) {
+				if((points[i].x < x + radius + points[i].radius) && 
+					(points[i].x > x - radius - points[i].radius) && 
+					(points[i].y < y + radius + points[i].radius) && 
+					(points[i].y > y - radius - points[i].radius))
+					return false;				
+			};
+			return true;
+		}
+
+		function getRandomInRange(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+        }	
+
+
+		function Point(x, y, radius, angle, speed, color) {
+			this.x = x;
+			this.y = y;
+			this.radius = radius;
+			this.angle = angle;
+			this.speed = speed;
+			this.color = color;
+
+			this.TurnAngle = function() {
+				this.angle += 180;
+					if(this.angle > 360)
+						this.angle = this.angle - 360;
+			}
+
+			this.DetectCircleCollision = function(new_x, new_y) {
+				for (var i = 0; i < points.length; i++) {
+					if(this.x != points[i].x && this.y != points[i].y) {
+						var temp_circle = points[i];
+						var d = Math.sqrt(Math.pow((new_x - temp_circle.x), 2) + Math.pow((new_y - temp_circle.y), 2));
+						if(d <= (this.radius + temp_circle.radius)) {
+							var temp = temp_circle.angle;
+							temp_circle.angle = this.angle;
+							this.angle = temp;
+
+							temp = temp_circle.speed;
+							temp_circle.speed = this.speed;
+							this.speed = temp;
+							return true;
+						}
+					}
+				};
+				return false;
+	        }
+
+	        this.DetectBorderCollision = function(new_x, new_y) {
+	        	var max_x = width - this.radius;
+				var max_y = height - this.radius;
+
+				this.x = new_x;
+				this.y = new_y;
+
+				// detect border collision
+				if(this.x <= this.radius && this.y <= this.radius) { // top left corner					
+					this.x = this.radius;
+					this.y = this.radius;
+					this.TurnAngle();
+					return true;
+				}
+				else if (this.x >= max_x && this.y <= this.radius) { // top right corner					
+					this.x = max_x;
+					this.y = this.radius;
+					this.TurnAngle();
+					return true;
+				}
+				else if (this.x >= max_x && this.y >= max_y) { // bottom right corner
+					this.x = max_x;
+					this.y = max_y;
+					this.TurnAngle();
+					return true;
+				}
+				else if (this.x <= this.radius && this.y >= max_y) { // bottom left corner					
+					this.x = this.radius;
+					this.y = max_y;
+					this.TurnAngle();
+					return true;
+				}				
+				else if (this.x <= this.radius) { // left wall
+					if(this.angle == 180)
+						this.TurnAngle();
+					else if (this.angle > 90 && this.angle < 180)						
+						this.angle = 180 - this.angle;
+					else if (this.angle > 180 && this.angle < 270)
+						this.angle = 360 - (this.angle - 180);
+
+					this.x = this.radius;
+					return true;
+				}
+				else if (this.y <= this.radius) { // top wall
+					if(this.angle == 90)
+						this.TurnAngle();
+					else if (this.angle > 90 && this.angle < 180)						
+						this.angle = 360 - this.angle;
+					else if (this.angle > 0 && this.angle < 90)
+						this.angle = 360 - this.angle;
+					
+					this.y = this.radius;
+					return true;
+				}
+				else if (this.x >= max_x) { // right wall
+					if(this.angle == 0 || this.angle == 360)
+						this.TurnAngle();
+					else if (this.angle > 0 && this.angle < 90)						
+						this.angle = 180 - this.angle;
+					else if (this.angle > 270 && this.angle < 360)
+						this.angle = 540 - this.angle;
+
+					this.x = max_x;
+					return true;
+				}
+				else if (this.y >= max_y) { // bottom wall
+					if(this.angle == 270)
+						this.TurnAngle();
+					else if (this.angle > 180 && this.angle < 270)						
+						this.angle = 360 - this.angle;
+					else if (this.angle > 270 && this.angle < 360)
+						this.angle = 360 - this.angle;
+					
+					this.y = max_y;
+					return true;
+				}
+				return false;
+	        }
+
+			this.getNewCords = function() {						
+
+				var new_x = this.x + this.speed * Math.cos(this.angle * Math.PI / 180);
+				var new_y = this.y - this.speed * Math.sin(this.angle * Math.PI / 180);	
+				if(this.isDirectionAvailable(new_x, new_y)) {
+					this.x = new_x;
+					this.y = new_y;
+				}
+				else {				
+					if(!this.DetectCircleCollision(new_x, new_y)) {
+						this.DetectBorderCollision(new_x, new_y);
+					}
+				}
+
+				// mouse use Force
+				if(mouse) {
+					var distance = Math.sqrt(Math.pow((this.x - mouse[0]), 2) + Math.pow((this.y - mouse[1]), 2));
+					if(distance <= mouse_radius_max) {
+						var angle = Math.atan2(mouse[1] - this.y, this.x - mouse[0]) / Math.PI * 180;
+						this.angle = (angle < 0) ? angle + 360 : angle;
+					}
+				}
+			}
+
+			this.isDirectionAvailable = function(new_x, new_y) {
+				for(var i = 0; i < points.length; i++) {
+					if(!(points[i].x == this.x && points[i].y == this.y)) {
+						var temp_circle = points[i];
+						var distance = Math.sqrt(Math.pow((new_x - temp_circle.x), 2) + Math.pow((new_y - temp_circle.y), 2));
+						if(distance <= (this.radius + temp_circle.radius)) {
+							return false;
+						}
+					}
+					if(new_x < this.radius || new_x > width-this.radius || new_y < this.radius || new_y > height-this.radius)										
+						return false;
+					
+				}
+				return true;
+			}
+		}
+
+	</script>
+</body>
+</html>
