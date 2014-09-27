@@ -1,17 +1,11 @@
 yandex-shri
 ===========
 
-#Задание 1
-##Позиционирование с помощью margin:auto
-[demo](http://tocher.github.io/yandex-shri/task1-popup/v1.html)
+#Задание 1 - popup
+[link](https://github.com/Tocher/yandex-shri/tree/gh-pages/task1-popup)
 
-###Плюсы
-- Кроссбраузерность (включая IE 8-10)
-- Никакой дополнительной разметки, минимум стилей
-- Адаптивность
-- Независимость от padding (без box-sizing!)
-- Работает для изображений
+#Задание 2 - equalizer
+[link](https://github.com/Tocher/yandex-shri/tree/gh-pages/task2-equalizer)
 
-###Минусы
-- Должна быть задана высота
-- Рекомендуется задать overflow: auto, при большом количестве контента
+#Задание 3 - brownian-motion
+[link](https://github.com/Tocher/yandex-shri/tree/gh-pages/task3-brownian-motion)

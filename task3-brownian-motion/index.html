@@ -76,10 +76,13 @@
 			.attr("mouse_radius",0)
     		.attr("mouse",true);
     	svg.append("circle")
-    		.attr("mouse_radius",10)
+    		.attr("mouse_radius",50)
     		.attr("mouse",true);
     	svg.append("circle")
-    		.attr("mouse_radius",20)
+    		.attr("mouse_radius",100)
+    		.attr("mouse",true);
+    	svg.append("circle")
+    		.attr("mouse_radius",150)
     		.attr("mouse",true);	    		
 
 		svg.on("mousemove", function() {
@@ -115,7 +118,8 @@
 					    			return m_r;
 					    		})
 					    		.style("fill", "rgba(0,0,0,0)")
-					    		.style("stroke", "rgba(0,0,255,1)");
+					    		.style("stroke", "rgba(0,0,255,.2)")
+					    		.style("stroke-width", 5);
 				    	}
 				    	else {
 				    		d3_el
