@@ -3,67 +3,88 @@
 <head>
 	<title>Yandex Task 1 (popup)</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="style.css">
 	<style type="text/css">
-		body {
-			margin: 0;
-			color:#333;
-			background-color: #F6F5F3;
-			font: 15px Arial,Helvetica,sans-serif;
-			line-height: 1.4em;
+		.overlay4 {
+		    background-color: rgba(0, 0, 0, 0.1);
+		    bottom: 0;
+		    cursor: default;
+		    left: 0;
+		    opacity: 0;
+		    position: fixed;
+		    right: 0;
+		    top: 0;
+		    visibility: hidden;
+		    z-index: 1;
 		}
-		h1 {
-			text-align: center;
+		.overlay4:target {
+		    visibility: visible;
+		    opacity: 1;
+		}
+		.overlay4:target+.popup {
+		    opacity: 1;
+		    visibility: visible;
 		}
 
-		.block {
-		  text-align: center;
-		  height: 100%;
+		.popup {
+			text-align: center;
+			height: 100%;
 			width: 100%;
 			top:0;
 			left:0;
-			position: absolute;
+			visibility: hidden;
+			opacity: 0;
+		    position: absolute;
 		}
 		 
-		.block:before { /* Элемент для вертикального выравнивания */
+		.popup:before { /* Элемент для вертикального выравнивания */
 		  content: '';
 		  display: inline-block;
 		  height: 100%; 
 		  vertical-align: middle;
 		  margin-right: -0.25em;
 		 }
-		 
-		.centered {
-		  display: inline-block;
-		  vertical-align: middle;
-		  /*width: 30%;*/
-		 }
-
-		.styled {		
-			padding:20px;	
-			background-color: #fff;
-			-webkit-box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 3px 4px -3px rgba(0,0,0,.3);
-			-moz-box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 3px 4px -3px rgba(0,0,0,.3);
-			box-shadow: 0 0 0 1px rgba(0,0,0,.1),0 3px 4px -3px rgba(0,0,0,.3);
-			text-align: left;
-		}
+		.popup > div {
+			display: inline-block;
+			vertical-align: middle;
+			max-width: 50%;
+			max-height: 80%;
+			overflow: auto;
+			z-index: 10;
+			position: relative;
+		}		
 	</style>	
 </head>
 <body>
-	<h1>Inline-block и один псевдоэлемент</h1>
+	<h1>Inline-block и псевдоэлемент (before, target)</h1>
+	<div class="center">
+		<div class="open"><a href="#popup">open popup</a></div>
+	</div>
+	<div class="content">
+		<h3>Плюсы</h3>
+		<ul>
+			<li>Изменяемая высота</li>
+		</ul>
 
-	<div class="block">    
-	    <div class="centered styled">
-	        <h3>Плюсы</h3>
-			<ul>
-				<li>Изменяемая высота</li>
-			</ul>
-
-			<h3>Минусы</h3>
-			<ul>
-				<li>Не работает в IE 8</li>
-			</ul>
-	    </div>	    
+		<h3>Минусы</h3>
+		<ul>
+			<li>Не работает в IE 8</li>
+		</ul>	
 	</div>
 
+	<a href="#x" class="overlay4" id="popup"></a>
+	<div class="popup">    
+	    <div class="styled">
+	    	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dignissim orci in quam scelerisque aliquet. Sed tempus eget nisi nec accumsan. Curabitur ex felis, aliquet a sem non, iaculis tempor leo. Nam vitae feugiat urna. Phasellus maximus dolor ac dictum accumsan. Nam a auctor mauris. Aliquam mauris turpis, rhoncus malesuada eleifend non, rhoncus eget risus. Integer vel nunc est. Sed faucibus turpis et nisi dapibus, sit amet scelerisque lorem maximus. Donec facilisis, lorem ut placerat fringilla, velit ante dignissim arcu, eget egestas ante arcu sit amet risus. Morbi quis iaculis mauris. Aenean semper eget felis ac pretium. Aenean eu malesuada sapien. Morbi sodales lacus quis ante vehicula, porta bibendum est placerat. Phasellus lobortis aliquam quam a placerat. Pellentesque ut velit sodales, porttitor nisi sit amet, porttitor sapien.
+
+			Ut pulvinar posuere ipsum sit amet varius. Duis eros ipsum, posuere egestas neque sit amet, blandit fermentum elit. Nunc non mattis felis. Curabitur egestas nisl tortor, ut euismod felis ullamcorper condimentum. Vivamus condimentum, risus ac ultrices rhoncus, odio lacus convallis augue, et bibendum ligula justo fermentum felis. Etiam eu magna quis ipsum ultricies interdum nec consectetur mi. Phasellus mattis tempor diam, vel ullamcorper turpis consequat eu. Ut commodo est vulputate magna finibus, fermentum pulvinar eros mattis. Nullam ac pharetra nisi. Maecenas a suscipit orci. Maecenas quis lectus nisl. Curabitur venenatis luctus nisl, vel hendrerit quam condimentum vitae.
+
+			Aenean at malesuada est. Morbi in euismod risus, id tristique risus. Quisque ac placerat mi. Aenean quis ornare lorem, nec consequat odio. Fusce a interdum ante. Aenean ut enim quis enim facilisis tincidunt sit amet vel turpis. Ut purus massa, lacinia at quam nec, viverra fermentum felis. Cras consectetur porttitor luctus. Sed interdum mauris sem, ac varius orci imperdiet at. Sed imperdiet, leo vitae dignissim pellentesque, neque lectus feugiat quam, in fringilla velit orci sit amet quam. Ut volutpat diam vitae volutpat rhoncus. In hac habitasse platea dictumst. Vivamus vitae ultricies diam. Vestibulum maximus eros ut mi blandit, id fringilla justo egestas. Integer porta eu turpis quis vestibulum.
+
+			Fusce eu purus non augue condimentum tempus. Mauris feugiat libero a dolor blandit, sed faucibus tellus luctus. Mauris ultrices rutrum commodo. Nunc vel malesuada elit. Aenean turpis risus, vulputate eget diam at, blandit facilisis nisl. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus dictum, ipsum id aliquam lacinia, augue est ullamcorper nulla, et volutpat elit orci id magna. Sed mattis ut eros sit amet eleifend. Etiam vel aliquam nisl, eu dignissim ex. In hac habitasse platea dictumst.
+
+			Vestibulum purus nibh, scelerisque nec eleifend et, molestie pellentesque ex. Nulla quis nisl sem. Sed eu euismod ipsum. Etiam tempus metus sed urna sagittis congue. Praesent accumsan quam eros, quis consequat tortor bibendum ut. Vestibulum pulvinar eros non odio fringilla ullamcorper. Nulla vehicula arcu augue, ac congue mauris accumsan quis. Curabitur sapien dolor, malesuada tincidunt ipsum quis, facilisis egestas leo. Maecenas a vehicula enim. Aliquam ut massa justo. Sed nisl ante, tristique in luctus nec, pellentesque non ex. Praesent ac erat in ligula bibendum malesuada. Curabitur pulvinar velit ac tempus sodales.
+	    </div>	    
+	</div>
 </body>
 </html>
