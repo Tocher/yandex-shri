@@ -24,6 +24,7 @@
 		var mouse_radius_max = 200;				// Mouse Force range
 		var mouse = false;
 		var super_speed = 20;
+		var wave_border = 5;
 
 		var FPS = 1000 / 60;
 
@@ -50,7 +51,7 @@
 		};
 
 
-
+		// Инициализация d3, svg и circles
 		var svg = d3.select("body")
 					.append("svg")
 					.attr("width", width)
@@ -76,11 +77,14 @@
 			.attr("mouse_radius",0)
     		.attr("mouse",true);
     	svg.append("circle")
-    		.attr("mouse_radius",10)
+    		.attr("mouse_radius",50)
     		.attr("mouse",true);
     	svg.append("circle")
-    		.attr("mouse_radius",20)
-    		.attr("mouse",true);	    		
+    		.attr("mouse_radius",100)
+    		.attr("mouse",true);
+    	svg.append("circle")
+    		.attr("mouse_radius",150)
+    		.attr("mouse",true);    		
 
 		svg.on("mousemove", function() {
 	    	mouse = d3.mouse(this);	    	
@@ -113,7 +117,8 @@
 					    			return m_r;
 					    		})
 					    		.style("fill", "rgba(0,0,0,0)")
-					    		.style("stroke", "rgba(0,0,255,1)");
+					    		.style("stroke", "rgba(0,0,255,.2)")
+					    		.style("stroke-width", wave_border);
 				    	}
 				    	else {
 				    		d3_el
