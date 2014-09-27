@@ -1,7 +1,7 @@
 body {
 	margin: 0;
 	color:#333;
-	background-color: #F6F5F3;
+	background-color: #fff;
 	font: 15px Arial,Helvetica,sans-serif;
 	line-height: 1.4em;
 }
@@ -47,7 +47,7 @@ h1 {
 }
 .overlay {
 	position: fixed;
-	background-color: rgba(0,0,0,.2);
+	background-color: rgba(180, 180, 180, 0.2);
 	top:0;
 	left:0;
 	width: 100%;

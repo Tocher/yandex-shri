@@ -13,16 +13,17 @@
 
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script type="text/javascript">		
-		var min_radius = 15;
-		var max_radius = 20;
+		var min_radius = 5;
+		var max_radius = 10;
 		var width = window.innerWidth,
 			height = window.innerHeight;			
-		var circleCount = 50; 					// wow
-		var min_speed = 2; 						// so slow
-		var max_speed = 4; 						// such speed
+		var circleCount = 300; 					// wow
+		var min_speed = 5; 						// so slow
+		var max_speed = 10; 					// such speed
 		var colors = ["#ff0000","#ffff00"]; 	// pretty colors
 		var mouse_radius_max = 200;				// Mouse Force range
 		var mouse = false;
+		var super_speed = 20;
 
 		var FPS = 1000 / 60;
 
@@ -49,7 +50,7 @@
 		};
 
 
-
+		// Инициализация d3, svg и circles
 		var svg = d3.select("body")
 					.append("svg")
 					.attr("width", width)
@@ -89,12 +90,14 @@
 	    })
 		
 
+	    // рендер
 	    setInterval(draw, FPS);
 
 		
 		function draw() {
 			svg.selectAll("circle")
 				.each(function(d) {
+					// кэширование элемента
 					var d3_el = d3.select(this);
 
 					// Mouse Waves
@@ -121,7 +124,7 @@
 				    	}
 				    	return;
 					}
-
+					
 					d.getNewCords();			
 					d3_el
 						.attr("cx",d.x)
@@ -168,6 +171,7 @@
 			this.angle = angle;
 			this.speed = speed;
 			this.color = color;
+			this.default_speed = speed;
 
 			this.TurnAngle = function() {
 				this.angle += 180;
@@ -276,42 +280,43 @@
 
 			this.getNewCords = function() {						
 
-				var new_x = this.x + this.speed * Math.cos(this.angle * Math.PI / 180);
-				var new_y = this.y - this.speed * Math.sin(this.angle * Math.PI / 180);	
+				this.getRandomAngle();
+				var new_x, new_y;
+				this.mouseEffect();
+				new_x = this.x + this.speed * Math.cos(this.angle * Math.PI / 180);
+				new_y = this.y - this.speed * Math.sin(this.angle * Math.PI / 180);					
+
 				if(this.isDirectionAvailable(new_x, new_y)) {
 					this.x = new_x;
 					this.y = new_y;
 				}
 				else {				
-					if(!this.DetectCircleCollision(new_x, new_y)) {
-						this.DetectBorderCollision(new_x, new_y);
-					}
-				}
+					this.DetectBorderCollision(new_x, new_y);	
+				}				
+			}
 
+			this.mouseEffect = function() {
 				// mouse use Force
 				if(mouse) {
 					var distance = Math.sqrt(Math.pow((this.x - mouse[0]), 2) + Math.pow((this.y - mouse[1]), 2));
 					if(distance <= mouse_radius_max) {
 						var angle = Math.atan2(mouse[1] - this.y, this.x - mouse[0]) / Math.PI * 180;
 						this.angle = (angle < 0) ? angle + 360 : angle;
+						this.speed = super_speed;
+						return;
 					}
 				}
+				this.speed = this.default_speed;
 			}
 
-			this.isDirectionAvailable = function(new_x, new_y) {
-				for(var i = 0; i < points.length; i++) {
-					if(!(points[i].x == this.x && points[i].y == this.y)) {
-						var temp_circle = points[i];
-						var distance = Math.sqrt(Math.pow((new_x - temp_circle.x), 2) + Math.pow((new_y - temp_circle.y), 2));
-						if(distance <= (this.radius + temp_circle.radius)) {
-							return false;
-						}
-					}
-					if(new_x < this.radius || new_x > width-this.radius || new_y < this.radius || new_y > height-this.radius)										
-						return false;
-					
-				}
+			this.isDirectionAvailable = function(new_x, new_y) {				
+				if(new_x < this.radius || new_x > width-this.radius || new_y < this.radius || new_y > height-this.radius)										
+					return false;
 				return true;
+			}
+
+			this.getRandomAngle = function() {
+				this.angle = getRandomInRange(0,360);
 			}
 		}
 
